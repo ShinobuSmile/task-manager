@@ -6,8 +6,9 @@ app = FastAPI(
     description="A REST API for managing personal tasks."
 )
 
-@app.get("/")
+@app.get("/status")
 def root():
     return {
-        "message": "Welcome to the Task Manager API!"
+        "status": "...",
+        "service": "Task Manager API"
     }
