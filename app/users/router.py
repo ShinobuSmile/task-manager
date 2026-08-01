@@ -12,8 +12,8 @@ router = APIRouter(prefix="/users", tags=["users"])
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # checks wheter username or email already exist
     db_user = User(
-        username=user.username,
-        email=user.email,
+        username = user.username,
+        email = user.email,
         password=hash_password(user.password)
     )
     db.add(db_user)
