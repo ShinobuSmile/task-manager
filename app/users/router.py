@@ -4,7 +4,7 @@ from app.database import get_db
 from app.users.schemas import UserLogin, Token, UserCreate
 from app.users.model import User
 from app.security import hash_password, verify_password
-from app.auth import create_access_token
+from app.auth import create_access_token, get_current_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -30,3 +30,12 @@ def login(user_login: UserLogin, db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong Credentials")
     access_token = create_access_token(user.id)
     return {"access_token" : access_token, "token_type": "bearer"}
+
+@router.get("/me")
+def user_logged_in(current_user: User = Depends(get_current_user)) -> dict:
+    user_credentials = {
+        "id" : current_user.id,
+        "username" : current_user.username,
+        "email" : current_user.email
+    }
+    return user_credentials
