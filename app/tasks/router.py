@@ -10,7 +10,9 @@ from app.tasks.schemas import TaskCreate, TaskOut
 
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 
-@router.get("/tasks")
+
+#look for tasks by filters
+@router.get("/tasks") 
 def view_tasks(current_user: User = Depends(get_current_user), db: Session = Depends(get_db), title:Optional[str] = None, priority : Optional[PrioEnum]= None, completed : Optional[bool]= None, due_date : Optional[date]= None):
     query = db.query(Task).filter(Task.user_id == current_user.id)
     if title: query = query.filter(Task.title == title)
@@ -19,6 +21,17 @@ def view_tasks(current_user: User = Depends(get_current_user), db: Session = Dep
     if due_date: query = query.filter(Task.due_date <= due_date)
     return query.all()
 
+
+#look for a specific task from ID
+@router.get("/{task_id}") 
+def get_task(task_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> TaskOut: 
+    query = db.query(Task).filter(Task.user_id == current_user.id, Task.id == task_id).first()
+    if not query:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="NO TASK FOUND")
+    return query
+
+
+#add task
 @router.post("/")
 def add_tasks(task_data: TaskCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> TaskOut:
     uid = current_user.id
