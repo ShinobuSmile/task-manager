@@ -20,3 +20,10 @@ class TaskOut(BaseModel):
     created_at: datetime
     updated_at: Optional[datetime] = None
     model_config = {"from_attributes": True}
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    due_date: Optional[date] = None
+    priority: Optional[PrioEnum] = None
+    completed: Optional[bool] = None
