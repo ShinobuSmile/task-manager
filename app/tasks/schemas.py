@@ -4,10 +4,10 @@ from datetime import date, datetime
 from app.tasks.model import PrioEnum
 
 class TaskCreate(BaseModel):
-    title: str = Field(description="Short description of the task", example="Buy groceries")
-    description: Optional[str] = Field(default=None, description="Detailed notes about the task (optional)", example="Milk, eggs, bread, and butter")
-    due_date: Optional[date] = Field(default=None, description="Deadline for completing the task (optional)", example="2026-08-15")
-    priority: PrioEnum = Field(description="How urgent the task is", example="low")
+    title: str = Field(description="Short description of the task", json_schema_extra={"example": "Buy groceries"})
+    description: Optional[str] = Field(default=None, description="Detailed notes about the task (optional)", json_schema_extra={"example": "Milk, eggs, bread, and butter"})
+    due_date: Optional[date] = Field(default=None, description="Deadline for completing the task (optional)", json_schema_extra={"example": "2026-08-15"})
+    priority: PrioEnum = Field(description="How urgent the task is", json_schema_extra={"example": "low"})
 
 class TaskOut(BaseModel):
     id: int = Field(description="Unique task identifier")
@@ -23,8 +23,8 @@ class TaskOut(BaseModel):
     model_config = {"from_attributes": True}
 
 class TaskUpdate(BaseModel):
-    title: Optional[str] = Field(default=None, description="New title", example="Updated title")
-    description: Optional[str] = Field(default=None, description="New description", example="Updated notes")
-    due_date: Optional[date] = Field(default=None, description="New due date", example="2026-08-20")
-    priority: Optional[PrioEnum] = Field(default=None, description="New priority (high, medium, low)", example="high")
-    completed: Optional[bool] = Field(default=None, description="Mark as completed (true or false)", example="true")
+    title: Optional[str] = Field(default=None, description="New title", json_schema_extra={"example": "Updated title"})
+    description: Optional[str] = Field(default=None, description="New description", json_schema_extra={"example": "Updated notes"})
+    due_date: Optional[date] = Field(default=None, description="New due date", json_schema_extra={"example": "2026-08-20"})
+    priority: Optional[PrioEnum] = Field(default=None, description="New priority (high, medium, low)", json_schema_extra={"example": "high"})
+    completed: Optional[bool] = Field(default=None, description="Mark as completed (true or false)", json_schema_extra={"example": "true"})

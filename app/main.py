@@ -17,6 +17,6 @@ app.include_router(tasks_router)
 @app.get("/status", summary = "Service status", description = "Verifies the status of the service and returns the name of the application")
 def root():
     return {
-        "status": "...",
+        "status": "ok",
         "service": "Task Manager API"
     }
