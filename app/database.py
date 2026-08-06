@@ -1,8 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Session
+import os
+from os import getenv
 
 #stringa di connessione per PostgreSQL
-DATABASE_URL = "postgresql://postgres:Elboss.2@localhost:5432/taskmanager"
+#DATABASE_URL = "postgresql://postgres:Elboss.2@localhost:5432/taskmanager"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

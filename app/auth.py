@@ -9,7 +9,7 @@ from fastapi import HTTPException, Depends, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 security = HTTPBearer()
-SECRET_KEY = os.getenv("SECRET_KEY", "my-secret-key")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 def create_access_token(user_id: int, expires_delta: Optional[timedelta]=None) -> str:

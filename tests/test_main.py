@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Session
 from app.database import Base
 
+
 client = TestClient(app)
 
 def test_status():

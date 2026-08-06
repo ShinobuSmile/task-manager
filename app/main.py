@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi import FastAPI
 from app.users.router import router as users_router
 from app.tasks.router import router as tasks_router
