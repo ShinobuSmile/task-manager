@@ -5,11 +5,6 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase, Session
 from app.database import Base
 
 client = TestClient(app)
-DATABASE_TEST_URL = "sqlite:///:memory:"
-
-engine = create_engine(DATABASE_TEST_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_test)
-
 
 def test_status():
     result = client.get("/status")

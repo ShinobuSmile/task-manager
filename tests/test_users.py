@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 from app.users.model import User
 from sqlalchemy.pool import StaticPool
+import pytest
 
 client = TestClient(app)
 
@@ -29,9 +30,32 @@ def override_get_db():
 app.dependency_overrides[get_db] = override_get_db
 
 def test_register_user():
-    result = client.post("/users/",json={ "username": "testuser", "email": "test@example.com", "password": "TestPass123"})
+    result = client.post("/users/",json={"username": "testuser", "email": "test@example.com", "password": "TestPass123"})
     assert result.status_code == 200
     data = result.json()
     assert data["id"] == 1
     assert data["username"] == "testuser"
     assert data["email"] == "test@example.com"
+
+def test_login_user():
+    result = client.post("/users/login", json={"username": "testuser", "email": "test@example.com", "password": "TestPass123"})
+    assert result.status_code == 200
+    data = result.json()
+    assert "access_token" in data
+    assert isinstance(data["access_token"], str)
+    assert len(data["access_token"]) > 0
+    assert data["token_type"] == "bearer"
+
+
+@pytest.mark.parametrize("username, email, password, expected_status", [
+    ("wrong", "test@example.com", "TestPass123", 401),
+    ("testuser", "wrong@example.com", "TestPass123", 401),
+    ("testuser", "test@example.com", "WrongPass", 401),
+])
+def test_login_failures(username, email, password, expected_status):
+    result = client.post("/users/login", json={
+        "username": username,
+        "email": email,
+        "password": password
+    })
+    assert result.status_code == expected_status
