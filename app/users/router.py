@@ -8,7 +8,9 @@ from app.auth import create_access_token, get_current_user
 
 router = APIRouter(prefix="/users", tags=["users"])
 
-@router.post("/")
+
+#Register a new user
+@router.post("/",summary = "Register user", description = "Register a new user with a unique username and email.")
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # checks wheter username or email already exist
     db_user = User(
@@ -21,7 +23,9 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return {"id": db_user.id, "username": db_user.username, "email": db_user.email}
 
-@router.post("/login")
+
+#Authenticate an existing user and receive a JWT access token.
+@router.post("/login", summary = "Login", description = "Authenticate an existing user and receive a JWT access token.")
 def login(user_login: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == user_login.username, User.email == user_login.email).first()
     if not user:
@@ -31,7 +35,9 @@ def login(user_login: UserLogin, db: Session = Depends(get_db)):
     access_token = create_access_token(user.id)
     return {"access_token" : access_token, "token_type": "bearer"}
 
-@router.get("/me")
+
+#Retrieve the profile of the currently authenticated user.
+@router.get("/me", summary = "Get current user", description = "Retrieve the profile of the currently authenticated user.")
 def user_logged_in(current_user: User = Depends(get_current_user)) -> dict:
     user_credentials = {
         "id" : current_user.id,

@@ -12,7 +12,7 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 
 #look for tasks by filters
-@router.get("/tasks") 
+@router.get("/tasks", summary = "List tasks", description = "List tasks of the authenticated user. You can filter by title, priority, completion status, and due date.") 
 def view_tasks(current_user: User = Depends(get_current_user), db: Session = Depends(get_db), title:Optional[str] = None, priority : Optional[PrioEnum]= None, completed : Optional[bool]= None, due_date : Optional[date]= None):
     query = db.query(Task).filter(Task.user_id == current_user.id)
     if title: query = query.filter(Task.title == title)
@@ -23,7 +23,7 @@ def view_tasks(current_user: User = Depends(get_current_user), db: Session = Dep
 
 
 #look for a specific task from ID
-@router.get("/{task_id}") 
+@router.get("/{task_id}", summary = "Get task", description = "Retrieve a single task by its ID. Only the owner can access it.") 
 def get_task(task_id: int, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> TaskOut: 
     query = db.query(Task).filter(Task.user_id == current_user.id, Task.id == task_id).first()
     if not query:
@@ -32,7 +32,7 @@ def get_task(task_id: int, current_user: User = Depends(get_current_user), db: S
 
 
 #add task
-@router.post("/")
+@router.post("/", summary = "Create task", description = "Create a new task for the authenticated user.")
 def add_tasks(task_data: TaskCreate, current_user: User = Depends(get_current_user), db: Session = Depends(get_db)) -> TaskOut:
     uid = current_user.id
     task = Task(
@@ -49,9 +49,8 @@ def add_tasks(task_data: TaskCreate, current_user: User = Depends(get_current_us
     return task
 
 
-
 #update task
-@router.patch("/{task_id}")
+@router.patch("/{task_id}", summary = "Update task", description = "Partially update a task (e.g., mark as completed, change priority). Only the owner can modify it.")
 def update_task(task_id:int, task_update: TaskUpdate, current_user: User = Depends(get_current_user), db:Session = Depends(get_db)) -> TaskOut:
     task = db.query(Task).filter(Task.user_id == current_user.id, Task.id == task_id).first()
     if not task:
@@ -65,7 +64,7 @@ def update_task(task_id:int, task_update: TaskUpdate, current_user: User = Depen
 
 
 #delete task
-@router.delete("/{task_id}")
+@router.delete("/{task_id}", summary = "Delete task", description = "Delete a task by its ID. Only the owner can delete it. Returns 204 No Content.")
 def delete_task(task_id:int, current_user: User = Depends(get_current_user), db:Session = Depends(get_db)):
     task = db.query(Task).filter(Task.user_id == current_user.id, Task.id == task_id).first()
     if not task:
