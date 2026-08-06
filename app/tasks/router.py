@@ -13,7 +13,14 @@ router = APIRouter(prefix="/tasks", tags=["tasks"])
 
 #look for tasks by filters
 @router.get("/tasks", summary = "List tasks", description = "List tasks of the authenticated user. You can filter by title, priority, completion status, and due date.") 
-def view_tasks(current_user: User = Depends(get_current_user), db: Session = Depends(get_db), title:Optional[str] = None, priority : Optional[PrioEnum]= None, completed : Optional[bool]= None, due_date : Optional[date]= None):
+def view_tasks(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+    title: Optional[str] = Query(default=None, description="Filter by exact task title", examples=["Buy groceries"]),
+    priority: Optional[PrioEnum] = Query(default=None, description="Filter by task priority (high, medium, low)", examples=["high"]),
+    completed: Optional[bool] = Query(default=None, description="Filter by completion status (true or false)", examples=["false"]),
+    due_date: Optional[date] = Query(default=None, description="Filter tasks due on or before this date", examples=["2026-08-15"])
+    ):
     query = db.query(Task).filter(Task.user_id == current_user.id)
     if title: query = query.filter(Task.title == title)
     if priority: query = query.filter(Task.priority == priority)
