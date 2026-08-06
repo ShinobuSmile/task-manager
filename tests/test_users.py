@@ -29,6 +29,8 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
+
+#test for user registration
 def test_register_user():
     result = client.post("/users/",json={"username": "testuser", "email": "test@example.com", "password": "TestPass123"})
     assert result.status_code == 200
@@ -37,6 +39,8 @@ def test_register_user():
     assert data["username"] == "testuser"
     assert data["email"] == "test@example.com"
 
+
+#test for login
 def test_login_user():
     result = client.post("/users/login", json={"username": "testuser", "email": "test@example.com", "password": "TestPass123"})
     assert result.status_code == 200
@@ -47,6 +51,8 @@ def test_login_user():
     assert data["token_type"] == "bearer"
 
 
+
+#test for login with wrong credentials
 @pytest.mark.parametrize("username, email, password, expected_status", [
     ("wrong", "test@example.com", "TestPass123", 401),
     ("testuser", "wrong@example.com", "TestPass123", 401),
