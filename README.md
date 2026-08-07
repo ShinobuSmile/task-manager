@@ -122,29 +122,30 @@ The database tables are created automatically on startup.
 - docker-compose run app pytest
 
 ## Project Structure
-
+```
 task-manager/
 ├── app/
-│   ├── main.py              # FastAPI application entry point
-│   ├── database.py          # Database engine and session
-│   ├── auth.py              # JWT creation and current user dependency
-│   ├── security.py          # Password hashing (bcrypt)
-│   ├── init_db.py           # Manual table creation script (optional)
-│   ├── users/
-│   │   ├── model.py         # SQLAlchemy User model
-│   │   ├── schemas.py       # Pydantic schemas (UserCreate, UserLogin, Token)
-│   │   └── router.py        # User endpoints
-│   └── tasks/
-│       ├── model.py         # SQLAlchemy Task model + PriorityEnum
-│       ├── schemas.py       # Pydantic schemas (TaskCreate, TaskUpdate, TaskOut)
-│       └── router.py        # Task endpoints
+│ ├── main.py # FastAPI application entry point
+│ ├── database.py # Database engine and session
+│ ├── auth.py # JWT creation and current user dependency
+│ ├── security.py # Password hashing (bcrypt)
+│ ├── init_db.py # Manual table creation script (optional)
+│ ├── users/
+│ │ ├── model.py # SQLAlchemy User model
+│ │ ├── schemas.py # Pydantic schemas (UserCreate, UserLogin, Token)
+│ │ └── router.py # User endpoints
+│ └── tasks/
+│ ├── model.py # SQLAlchemy Task model + PriorityEnum
+│ ├── schemas.py # Pydantic schemas (TaskCreate, TaskUpdate, TaskOut)
+│ └── router.py # Task endpoints
 ├── tests/
-│   ├── conftest.py          # Shared test configuration (env vars)
-│   ├── test_main.py         # Status endpoint test
-│   ├── test_users.py        # User registration and login tests
-│   └── test_tasks.py        # Task CRUD and filter tests
+│ ├── conftest.py # Shared test configuration (env vars)
+│ ├── test_main.py # Status endpoint test
+│ ├── test_users.py # User registration and login tests
+│ └── test_tasks.py # Task CRUD and filter tests
 ├── Dockerfile
 ├── docker-compose.yml
 ├── requirements.txt
-├── .env.example             # Example environment variables
+├── .env.example # Example environment variables
 └── README.md
+```
