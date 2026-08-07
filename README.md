@@ -90,7 +90,7 @@ with filtering support by title, priority, completion status, and due date.
 | POST   | `/users/login`         | Login and receive JWT token                          | No   |
 | GET    | `/users/me`            | Get current user profile                             | Yes  |
 | POST   | `/tasks/`              | Create a new task                                    | Yes  |
-| GET    | `/tasks/`              | List user's tasks (with optional filters)            | Yes  |
+| GET    | `/tasks/tasks`         | List user's tasks (with optional filters)            | Yes  |
 | GET    | `/tasks/{task_id}`     | Get a single task (owner only)                       | Yes  |
 | PATCH  | `/tasks/{task_id}`     | Update a task (owner only)                           | Yes  |
 | DELETE | `/tasks/{task_id}`     | Delete a task (owner only)                           | Yes  |
