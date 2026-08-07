@@ -3,6 +3,7 @@ load_dotenv()
 from fastapi import FastAPI
 from app.users.router import router as users_router
 from app.tasks.router import router as tasks_router
+from app.database import engine, Base
 
 
 app = FastAPI(
@@ -10,6 +11,10 @@ app = FastAPI(
     version="0.1.0",
     description="A REST API for managing personal tasks."
 )
+
+@app.on_event("startup")
+def create_tables():
+    Base.metadata.create_all(bind=engine)
 
 app.include_router(users_router)
 app.include_router(tasks_router)
